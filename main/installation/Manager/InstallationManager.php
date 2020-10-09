@@ -46,6 +46,11 @@ class InstallationManager implements LoggerAwareInterface
      */
     private $fixtureLoader;
 
+    /**
+     * @var bool Whether additional installers should re-execute updaters that have been previously executed.
+     */
+    private $shouldReplayUpdaters = false;
+
     public function __construct(
         ContainerInterface $container,
         Manager $migrationManager,
@@ -115,6 +120,7 @@ class InstallationManager implements LoggerAwareInterface
 
         if ($additionalInstaller) {
             $this->log('Launching pre-update actions...');
+            $additionalInstaller->setShouldReplayUpdaters($this->shouldReplayUpdaters);
             $additionalInstaller->preUpdate($currentVersion, $targetVersion);
         }
 
@@ -166,6 +172,11 @@ class InstallationManager implements LoggerAwareInterface
             $this->log('Launching post-uninstallation actions...');
             $additionalInstaller->postUninstall();
         }
+    }
+
+    public function setShouldReplayUpdaters(bool $shouldReplayUpdaters): void
+    {
+        $this->shouldReplayUpdaters = $shouldReplayUpdaters;
     }
 
     /**

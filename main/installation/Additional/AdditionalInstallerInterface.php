@@ -17,6 +17,10 @@ interface AdditionalInstallerInterface
 {
     public function setEnvironment($environment);
 
+    public function setShouldReplayUpdaters(bool $shouldReplayUpdaters): void;
+
+    public function shouldReplayUpdaters(): bool;
+
     public function setLogger(LoggerInterface $logger = null);
 
     public function preInstall();

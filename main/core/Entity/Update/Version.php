@@ -16,13 +16,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- *     uniqueConstraints={.
- *
- *         @ORM\UniqueConstraint(
- *             name="unique_version",
- *             columns={"version", "bundle", "branch"}
- *         )
- *     }
+ * ORM\UniqueConstraint(
+ *     name="unique_version",
+ *     columns={"version", "bundle", "branch"}
+ * )
  */
 
 /**

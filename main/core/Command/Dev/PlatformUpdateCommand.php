@@ -81,6 +81,12 @@ class PlatformUpdateCommand extends Command
                 'c',
                 InputOption::VALUE_NONE,
                 'When set to true, the cache is cleared at the end'
+            )
+            ->addOption(
+                'force',
+                'f',
+                InputOption::VALUE_NONE,
+                'When set to true, updaters will be executed regardless if they have been already.'
             );
     }
 
@@ -101,6 +107,10 @@ class PlatformUpdateCommand extends Command
 
         if (!$input->getOption('no_symlink')) {
             $this->refresher->buildSymlinks();
+        }
+
+        if ($input->getOption('force')) {
+            $this->installer->setShouldReplayUpdaters(true);
         }
 
         $this->installer->setOutput($output);

@@ -1,0 +1,13 @@
+services:
+    _defaults: { public: true }
+
+    Claroline\CursusBundle\DataFixtures\PostInstall\LoadTemplateData:
+        - '@translator'
+        - '@Claroline\CoreBundle\Library\Configuration\PlatformConfigurationHandler'
+
+    Claroline\CursusBundle\Installation\Updater\Updater130000:
+        arguments:
+            - '@Claroline\AppBundle\Persistence\ObjectManager'
+            - '@Claroline\CursusBundle\DataFixtures\PostInstall\LoadTemplateData'
+            - '@logger'
+        tags: ['claroline.platform.updater']

@@ -18,19 +18,21 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
-class LoadTemplateData extends AbstractFixture implements ContainerAwareInterface
+class LoadTemplateData extends AbstractFixture
 {
-    private $container;
     private $om;
     private $translator;
+    private $config;
     private $templateTypeRepo;
     private $templateRepo;
     private $availableLocales;
 
-    public function setContainer(ContainerInterface $container = null)
+    public function __construct(TranslatorInterface $translator, PlatformConfigurationHandler $config)
     {
-        $this->container = $container;
+        $this->translator = $translator;
+        $this->config = $config;
     }
 
     public function load(ObjectManager $om)
@@ -38,8 +40,7 @@ class LoadTemplateData extends AbstractFixture implements ContainerAwareInterfac
         $this->om = $om;
         $this->templateTypeRepo = $om->getRepository(TemplateType::class);
         $this->templateRepo = $om->getRepository(Template::class);
-        $this->translator = $this->container->get('translator');
-        $this->availableLocales = $this->container->get(PlatformConfigurationHandler::class)->getParameter('locales.available');
+        $this->availableLocales = $this->config->getParameter('locales.available');
 
         $this->createCourseTemplates();
         $this->createSessionTemplates();
